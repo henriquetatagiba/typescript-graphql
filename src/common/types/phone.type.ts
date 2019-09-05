@@ -1,8 +1,11 @@
-import { ObjectType, Field } from 'type-graphql';
+import { ObjectType, Field, ID } from 'type-graphql';
 import { prop as Prop } from 'typegoose';
 
 @ObjectType()
 export class Phone {
+  @Field(() => ID)
+  public id: string;
+
   @Prop()
   @Field(() => String)
   public type: string;

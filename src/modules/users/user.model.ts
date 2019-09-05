@@ -47,19 +47,19 @@ export class User extends Typegoose {
   @Field(() => String, { nullable: true })
   public token: string;
 
-  @Prop({ default: 'lead' })
+  @Prop({ default: 'user' })
   @Field(() => String)
   public role: string;
 
-  @Prop({ _id: false })
-  @Field(() => Address, { nullable: true })
-  public address: Address;
+  @ArrayProp({ items: Address })
+  @Field(() => [Address], { nullable: true })
+  public addresses: Address[];
 
-  @Prop({ required: true })
+  @ArrayProp({ items: Phone })
   @Field(() => [Phone])
   public phones: Phone[];
 
-  @Prop({ required: true })
+  @ArrayProp({ items: Document })
   @Field(() => [Document])
   public documents: Document[];
 

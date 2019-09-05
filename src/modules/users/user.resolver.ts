@@ -14,6 +14,9 @@ import * as bcrypt from 'bcrypt';
 import { UpdateUserInput } from './inputs/updateUser.input';
 import { UserInvalid } from '../../common/errors';
 import { LoginUserInput } from './inputs/loginUser.input';
+import { CreateUserInput } from './inputs/createUser.input';
+import { YupValidate } from '../../common/decorators/yupValidation';
+import { createUserSchema } from './user.validation';
 
 @Resolver(() => User)
 export class UserResolver {
@@ -60,6 +63,18 @@ export class UserResolver {
         }
         throw new UserInvalid();
       });
+    });
+  }
+
+  @YupValidate(createUserSchema)
+  @Mutation(() => User)
+  public async createUser(
+    @Arg('input', () => CreateUserInput) input: CreateUserInput
+  ) {
+    return userModel.create(input).then(user => {
+      user.token = JWT.createToken(user.toObject());
+
+      return user;
     });
   }
 }

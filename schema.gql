@@ -4,6 +4,7 @@
 # -----------------------------------------------
 
 type Address {
+  id: ID!
   country: String!
   state: String!
   city: String!
@@ -25,12 +26,22 @@ input AddressInput {
   complementary: String
 }
 
+input CreateUserInput {
+  name: String!
+  email: String!
+  password: String!
+  documents: [DocumentInput!]!
+  phones: [PhoneInput!]!
+  addresses: [AddressInput!]!
+}
+
 """
 The javascript `Date` as string. Type represents date and time as the ISO Date string.
 """
 scalar DateTime
 
 type Document {
+  id: ID!
   type: String!
   number: String!
 }
@@ -48,9 +59,11 @@ input LoginUserInput {
 type Mutation {
   updateUser(input: UpdateUserInput!): User!
   login(input: LoginUserInput!): User!
+  createUser(input: CreateUserInput!): User!
 }
 
 type Phone {
+  id: ID!
   type: String!
   number: String!
 }
@@ -82,7 +95,7 @@ type User {
   email: String
   token: String
   role: String!
-  address: Address
+  addresses: [Address!]
   phones: [Phone!]!
   documents: [Document!]!
   createdAt: DateTime!

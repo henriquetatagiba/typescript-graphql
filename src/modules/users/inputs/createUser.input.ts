@@ -1,6 +1,7 @@
 import { InputType, Field } from 'type-graphql';
 import { DocumentInput } from '../../../common/inputs/document.input';
 import { PhoneInput } from '../../../common/inputs/phone.input';
+import { AddressInput } from '../../../common/inputs/address.input';
 
 @InputType()
 export class CreateUserInput {
@@ -18,4 +19,7 @@ export class CreateUserInput {
 
   @Field(() => [PhoneInput])
   public phones: PhoneInput[];
+
+  @Field(() => [AddressInput])
+  public addresses: AddressInput[];
 }
