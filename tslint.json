@@ -1,0 +1,20 @@
+{
+  "defaultSeverity": "error",
+  "extends": [
+    "tslint:latest",
+    "tslint-config-airbnb",
+    "tslint-config-prettier"
+  ],
+  "jsRules": {},
+  "rules": {
+    "import-name": false,
+    "ordered-imports": false,
+    "object-literal-sort-keys": false,
+    "max-classes-per-file": false,
+    "member-ordering": false,
+    "no-invalid-template-strings": false,
+    "no-submodule-imports": false,
+    "prefer-array-literal": [true, { "allow-type-parameters": true }]
+  },
+  "rulesDirectory": []
+}

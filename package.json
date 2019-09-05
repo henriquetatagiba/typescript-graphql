@@ -1,0 +1,48 @@
+{
+  "name": "api-distribuidora",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Henrique Tatagiba",
+  "license": "MIT",
+  "scripts": {
+    "dev": "tsc-watch --onSuccess \"node ./dist/index.js\" --compiler typescript/bin/tsc",
+    "build": "tsc && node dist/index.js"
+  },
+  "husky": {
+    "hooks": {
+      "post-commit": [
+        "apollo service:push"
+      ]
+    }
+  },
+  "dependencies": {
+    "apollo-server-express": "^2.8.1",
+    "bcrypt": "^3.0.6",
+    "date-fns": "^2.0.1",
+    "dotenv": "^8.1.0",
+    "express": "^4.17.1",
+    "graphql": "^14.4.2",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.6.9",
+    "pagarme": "^4.4.0",
+    "reflect-metadata": "^0.1.13",
+    "type-graphql": "^0.17.5",
+    "typedi": "^0.8.0",
+    "typegoose": "^5.9.0",
+    "typescript": "^3.5.3",
+    "yup": "^0.27.0"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^3.0.0",
+    "@types/express": "^4.17.1",
+    "@types/graphql": "^14.2.3",
+    "@types/jsonwebtoken": "^8.3.3",
+    "@types/mongoose": "^5.5.12",
+    "@types/yup": "^0.26.22",
+    "husky": "^3.0.4",
+    "tsc-watch": "^2.4.0",
+    "tslint": "^5.18.0",
+    "tslint-config-airbnb": "^5.11.1",
+    "tslint-config-prettier": "^1.18.0"
+  }
+}
