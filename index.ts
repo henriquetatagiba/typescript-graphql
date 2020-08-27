@@ -1,15 +1,20 @@
 import 'dotenv/config';
-import setupApp from './src/app';
+import { $log } from '@tsed/common';
+import { PlatformExpress } from '@tsed/platform-express';
+import { App } from './src/app';
 
-const port = 4000;
+// /!\ configuration file must be outside of your src directory
 
-setupApp()
-  .then(app =>
-    app.listen(port, () =>
-      console.log(`Server running on port http://localhost:${port}`)
-    )
-  )
-  .catch((err: Error) => {
-    console.error(err);
-    process.exit(1);
-  });
+async function bootstrap() {
+  try {
+    $log.debug('Start server...');
+    const platform = await PlatformExpress.bootstrap(App);
+
+    await platform.listen();
+    $log.debug('Server initialized');
+  } catch (er) {
+    $log.error(er);
+  }
+}
+
+bootstrap();
