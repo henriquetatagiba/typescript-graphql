@@ -6,7 +6,8 @@
   "license": "MIT",
   "scripts": {
     "dev": "tsc-watch --onSuccess \"node ./dist/index.js\" --compiler typescript/bin/tsc",
-    "build": "tsc && node dist/index.js"
+    "build": "tsc -p tsconfig.prod.json",
+    "start": "node ./dist/index.js"
   },
   "husky": {
     "hooks": {

@@ -1,0 +1,50 @@
+name: Publish Image and Deploy
+
+on:
+  push:
+    branches:
+      - master
+    tags:
+      - v*
+
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  push:
+
+    name: Push to Docker Registry
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+
+    steps:
+      - name: Checkout master
+        uses: actions/checkout@master
+
+      - name: Publish to Registry
+        uses: elgohr/Publish-Docker-Github-Action@master
+        with:
+          name: ${{ github.repository }}/node-campanha-smart-image
+          username: ${{ github.actor }}
+          password: ${{ github.token }}
+          registry: docker.pkg.github.com
+
+  rollout:
+    name: Rollout application on K8s 
+    runs-on: ubuntu-latest
+    needs: push
+
+    steps:
+    - name: Save DigitalOcean kubeconfig
+      uses: digitalocean/action-doctl@master
+      env:
+        DIGITALOCEAN_ACCESS_TOKEN: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+      with:
+        args: kubernetes cluster kubeconfig show k8s-oneped-2 > $GITHUB_WORKSPACE/.kubeconfig
+
+    - name: Deploy to Kubernetes
+      run: kubectl --kubeconfig=$GITHUB_WORKSPACE/.kubeconfig rollout restart deploy node-campanha-smart
+
+    - name: Verify deployment
+      run: kubectl --kubeconfig=$GITHUB_WORKSPACE/.kubeconfig rollout status deploy node-campanha-smart
