@@ -6,7 +6,7 @@ export class CreateRequestInput {
   @JsonProperty()
   public email: string;
 
-  @IsPhoneNumber('BR')
+  @IsString()
   @JsonProperty()
   public phone: string;
 
