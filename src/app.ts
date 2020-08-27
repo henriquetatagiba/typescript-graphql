@@ -25,7 +25,7 @@ const configureExpress = async () => {
     context: async ({ req }) => ({
       auth: await Auth.getUser(req),
     }),
-    formatError: err => ({
+    formatError: (err) => ({
       message: err.message,
       code: err.extensions && err.extensions.code,
       locations: err.locations,

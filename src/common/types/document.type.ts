@@ -1,5 +1,5 @@
 import { ObjectType, Field, ID } from 'type-graphql';
-import { prop as Prop } from 'typegoose';
+import { prop as Prop } from '@typegoose/typegoose';
 
 @ObjectType()
 export class Document {

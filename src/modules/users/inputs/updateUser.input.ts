@@ -1,4 +1,4 @@
-import { InputType, Field, ID, Authorized } from 'type-graphql';
+import { InputType, Field, ID } from 'type-graphql';
 import { DocumentInput } from '../../../common/inputs/document.input';
 import { AddressInput } from '../../../common/inputs/address.input';
 import { PhoneInput } from '../../../common/inputs/phone.input';

@@ -4,35 +4,35 @@
 # -----------------------------------------------
 
 type Address {
-  id: ID!
-  country: String!
-  state: String!
   city: String!
+  complementary: String
+  country: String!
+  id: ID!
+  neighborhood: String
+  state: String!
   street: String!
   streetNumber: String!
   zipcode: String!
-  neighborhood: String
-  complementary: String
 }
 
 input AddressInput {
-  country: String!
-  state: String!
   city: String!
+  complementary: String
+  country: String!
+  neighborhood: String
+  state: String!
   street: String!
   streetNumber: String!
   zipcode: String!
-  neighborhood: String
-  complementary: String
 }
 
 input CreateUserInput {
-  name: String!
-  email: String!
-  password: String!
-  documents: [DocumentInput!]!
-  phones: [PhoneInput!]!
   addresses: [AddressInput!]!
+  documents: [DocumentInput!]!
+  email: String!
+  name: String!
+  password: String!
+  phones: [PhoneInput!]!
 }
 
 """
@@ -42,13 +42,13 @@ scalar DateTime
 
 type Document {
   id: ID!
-  type: String!
   number: String!
+  type: String!
 }
 
 input DocumentInput {
-  type: String!
   number: String!
+  type: String!
 }
 
 input LoginUserInput {
@@ -57,20 +57,20 @@ input LoginUserInput {
 }
 
 type Mutation {
-  updateUser(input: UpdateUserInput!): User!
-  login(input: LoginUserInput!): User!
   createUser(input: CreateUserInput!): User!
+  login(input: LoginUserInput!): User!
+  updateUser(input: UpdateUserInput!): User!
 }
 
 type Phone {
   id: ID!
-  type: String!
   number: String!
+  type: String!
 }
 
 input PhoneInput {
-  type: String!
   number: String!
+  type: String!
 }
 
 type Query {
@@ -79,25 +79,26 @@ type Query {
 }
 
 input UpdateUserInput {
+  address: AddressInput!
+  documents: DocumentInput!
+
   """Admins can update other user by id"""
   id: ID
   name: String!
-  documents: DocumentInput!
-  address: AddressInput!
-  phones: PhoneInput!
   password: String
+  phones: PhoneInput!
 }
 
 type User {
+  addresses: [Address!]
+  createdAt: DateTime!
+  documents: [Document!]!
+  email: String
   id: ID!
   name: String!
-  status: String!
-  email: String
-  token: String
-  role: String!
-  addresses: [Address!]
   phones: [Phone!]!
-  documents: [Document!]!
-  createdAt: DateTime!
+  role: String!
+  status: String!
+  token: String
   updatedAt: DateTime!
 }

@@ -15,7 +15,6 @@ import { UpdateUserInput } from './inputs/updateUser.input';
 import { UserInvalid } from '../../common/errors';
 import { LoginUserInput } from './inputs/loginUser.input';
 import { CreateUserInput } from './inputs/createUser.input';
-import { YupValidate } from '../../common/decorators/yupValidation';
 import { createUserSchema } from './user.validation';
 
 @Resolver(() => User)
@@ -52,10 +51,10 @@ export class UserResolver {
   public async login(
     @Arg('input', () => LoginUserInput) input: LoginUserInput
   ) {
-    return userModel.findOne({ email: input.email }).then(async user => {
+    return userModel.findOne({ email: input.email }).then(async (user) => {
       if (!user) throw new UserInvalid();
 
-      return bcrypt.compare(input.password, user.password).then(res => {
+      return bcrypt.compare(input.password, user.password).then((res) => {
         if (res) {
           user.token = JWT.createToken(user.toObject());
 
@@ -66,12 +65,11 @@ export class UserResolver {
     });
   }
 
-  @YupValidate(createUserSchema)
   @Mutation(() => User)
   public async createUser(
     @Arg('input', () => CreateUserInput) input: CreateUserInput
   ) {
-    return userModel.create(input).then(user => {
+    return userModel.create(input).then((user) => {
       user.token = JWT.createToken(user.toObject());
 
       return user;

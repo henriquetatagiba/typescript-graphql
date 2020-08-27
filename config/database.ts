@@ -7,5 +7,6 @@ export const connect = (): Promise<mongoose.Mongoose> => {
     useNewUrlParser: true,
     useCreateIndex: true,
     useFindAndModify: false,
+    useUnifiedTopology: true,
   });
 };

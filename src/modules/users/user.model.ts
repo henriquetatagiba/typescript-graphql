@@ -1,31 +1,28 @@
-import { Field, ObjectType, ID } from 'type-graphql';
 import {
-  prop as Prop,
-  pre as Pre,
-  Typegoose,
-  Ref,
-  instanceMethod,
-  InstanceType,
-  arrayProp as ArrayProp,
-  staticMethod,
-  ModelType,
-} from 'typegoose';
+  DocumentType,
+  Prop,
+  Pre,
+  getModelForClass,
+  ModelOptions,
+} from '@typegoose/typegoose';
+import { Field, ObjectType, ID } from 'type-graphql';
 import * as bcrypt from 'bcrypt';
 import { Address } from '../../common/types/address.type';
 import { Phone } from '../../common/types/phone.type';
 import { Document } from '../../common/types/document.type';
 
-export interface IUser extends InstanceType<User> {}
+export interface IUser extends DocumentType<User> {}
 
 @ObjectType()
-@Pre<User>('save', function(next) {
+@Pre<User>('save', function (next) {
   if (this.password) {
     const salt = bcrypt.genSaltSync();
     this.password = bcrypt.hashSync(this.password, salt);
   }
   next();
 })
-export class User extends Typegoose {
+@ModelOptions({ schemaOptions: { timestamps: true } })
+export class User {
   @Field(() => ID)
   public id: string;
 
@@ -51,15 +48,15 @@ export class User extends Typegoose {
   @Field(() => String)
   public role: string;
 
-  @ArrayProp({ items: Address })
+  @Prop(() => [Address])
   @Field(() => [Address], { nullable: true })
   public addresses: Address[];
 
-  @ArrayProp({ items: Phone })
+  @Prop(() => [Phone])
   @Field(() => [Phone])
   public phones: Phone[];
 
-  @ArrayProp({ items: Document })
+  @Prop(() => [Document])
   @Field(() => [Document])
   public documents: Document[];
 
@@ -69,7 +66,7 @@ export class User extends Typegoose {
   @Field(() => Date)
   public updatedAt: Date;
 
-  public hasRole(this: InstanceType<User>, ...roles: string[]) {
+  public hasRole(this: DocumentType<User>, ...roles: string[]) {
     if (roles.includes(this.role)) {
       return true;
     }
@@ -77,6 +74,4 @@ export class User extends Typegoose {
   }
 }
 
-export const userModel = new User().getModelForClass(User, {
-  schemaOptions: { timestamps: true },
-});
+export const userModel = getModelForClass(User);

@@ -1,5 +1,4 @@
 import { Field, InputType } from 'type-graphql';
-import { prop as Prop } from 'typegoose';
 
 @InputType()
 export class DocumentInput {

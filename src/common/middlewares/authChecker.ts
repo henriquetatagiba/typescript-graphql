@@ -1,9 +1,9 @@
 import { AuthChecker } from 'type-graphql';
 import { User } from '../../modules/users/user.model';
-import { InstanceType } from 'typegoose';
+import { DocumentType } from '@typegoose/typegoose';
 
 export interface IAuth {
-  auth: InstanceType<User>;
+  auth: DocumentType<User>;
 }
 
 export const authChecker: AuthChecker<IAuth> = (
