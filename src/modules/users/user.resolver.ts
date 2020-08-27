@@ -15,7 +15,6 @@ import { UpdateUserInput } from './inputs/updateUser.input';
 import { UserInvalid } from '../../common/errors';
 import { LoginUserInput } from './inputs/loginUser.input';
 import { CreateUserInput } from './inputs/createUser.input';
-import { createUserSchema } from './user.validation';
 
 @Resolver(() => User)
 export class UserResolver {

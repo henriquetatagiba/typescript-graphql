@@ -8,4 +8,4 @@ resources:
 
 configMapGenerator:
 - name: node-campanha-smart-env
-  env: .env.production
+  env: .env.prod
