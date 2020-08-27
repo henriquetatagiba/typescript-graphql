@@ -9,9 +9,10 @@ import {
   GlobalAcceptMimesMiddleware,
 } from '@tsed/common';
 import * as express from 'express';
-import * as database from '../config/database';
+import * as cors from 'cors';
 import * as compress from 'compression';
 import * as methodOverride from 'method-override';
+import * as database from '../config/database';
 import buildSchema from './app.module';
 import { Auth } from './common/auth';
 
@@ -45,6 +46,7 @@ export class App {
 
     this.app
       .use(GlobalAcceptMimesMiddleware)
+      .use(cors())
       .use(compress())
       .use(methodOverride())
       .use(express.json())
