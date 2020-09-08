@@ -1,7 +1,5 @@
-import 'reflect-metadata';
 import '@tsed/swagger';
 import './common/pipes';
-import { ApolloServer, makeExecutableSchema } from 'apollo-server-express';
 import {
   Configuration,
   Inject,
@@ -13,15 +11,43 @@ import * as cors from 'cors';
 import * as compress from 'compression';
 import * as methodOverride from 'method-override';
 import * as database from '../config/database';
-import buildSchema from './app.module';
 import { Auth } from './common/auth';
+import { authChecker } from './common/middlewares/authChecker';
 
 @Configuration({
   rootDir: __dirname,
   acceptMimes: ['application/json'],
   port: process.env.PORT || 4000,
+  httpsPort: false,
   swagger: {
     path: '/docs',
+  },
+  componentsScan: [
+    '${rootDir}/modules/**/*.resolver.ts',
+    '${rootDir}/modules/**/*.model.ts',
+    '${rootDir}/modules/**/*.service.ts',
+  ],
+  graphql: {
+    server1: {
+      path: '/graphql',
+      serverConfig: {
+        context: async ({ req }) => ({
+          auth: await Auth.getUser(req),
+        }),
+        formatError: (err) => ({
+          message: err.message,
+          code: err.extensions && err.extensions.code,
+          locations: err.locations,
+          path: err.path,
+          extensions: err.extensions && err.extensions.exception,
+        }),
+      },
+      buildSchemaOptions: {
+        authChecker,
+        emitSchemaFile: true,
+        validate: false,
+      },
+    },
   },
   mount: {
     '/api': '${rootDir}/modules/**/*.controller.ts',
@@ -39,9 +65,6 @@ export class App {
    * @returns {Server}
    */
   public async $beforeRoutesInit(): Promise<void | any> {
-    const { typeDefs, resolvers } = await buildSchema;
-
-    const schema = makeExecutableSchema({ typeDefs, resolvers });
     await database.connect();
 
     this.app
@@ -55,25 +78,9 @@ export class App {
           extended: true,
         })
       );
-
-    const server = new ApolloServer({
-      schema,
-      uploads: {
-        maxFiles: 10,
-        maxFileSize: 1000000,
-      },
-      context: async ({ req }) => ({
-        auth: await Auth.getUser(req),
-      }),
-      formatError: (err) => ({
-        message: err.message,
-        code: err.extensions && err.extensions.code,
-        locations: err.locations,
-        path: err.path,
-        extensions: err.extensions && err.extensions.exception,
-      }),
-    });
-
-    server.applyMiddleware({ app: this.app });
   }
+
+  // public $onMountingMiddlewares(): void {
+  //   this.app.use(GlobalBasicAuthMiddleware);
+  // }
 }

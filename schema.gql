@@ -3,36 +3,10 @@
 # !!!   DO NOT MODIFY THIS FILE BY YOURSELF   !!!
 # -----------------------------------------------
 
-type Address {
-  city: String!
-  complementary: String
-  country: String!
-  id: ID!
-  neighborhood: String
-  state: String!
-  street: String!
-  streetNumber: String!
-  zipcode: String!
-}
-
-input AddressInput {
-  city: String!
-  complementary: String
-  country: String!
-  neighborhood: String
-  state: String!
-  street: String!
-  streetNumber: String!
-  zipcode: String!
-}
-
 input CreateUserInput {
-  addresses: [AddressInput!]!
-  documents: [DocumentInput!]!
-  email: String!
   name: String!
+  email: String!
   password: String!
-  phones: [PhoneInput!]!
 }
 
 """
@@ -40,37 +14,15 @@ The javascript `Date` as string. Type represents date and time as the ISO Date s
 """
 scalar DateTime
 
-type Document {
-  id: ID!
-  number: String!
-  type: String!
-}
-
-input DocumentInput {
-  number: String!
-  type: String!
-}
-
 input LoginUserInput {
   email: String!
   password: String!
 }
 
 type Mutation {
-  createUser(input: CreateUserInput!): User!
-  login(input: LoginUserInput!): User!
   updateUser(input: UpdateUserInput!): User!
-}
-
-type Phone {
-  id: ID!
-  number: String!
-  type: String!
-}
-
-input PhoneInput {
-  number: String!
-  type: String!
+  login(input: LoginUserInput!): User!
+  createUser(input: CreateUserInput!): User!
 }
 
 type Query {
@@ -79,26 +31,30 @@ type Query {
 }
 
 input UpdateUserInput {
-  address: AddressInput!
-  documents: DocumentInput!
-
   """Admins can update other user by id"""
   id: ID
   name: String!
   password: String
-  phones: PhoneInput!
 }
 
 type User {
-  addresses: [Address!]
-  createdAt: DateTime!
-  documents: [Document!]!
-  email: String
   id: ID!
   name: String!
-  phones: [Phone!]!
-  role: String!
-  status: String!
+  status: UserStatus!
+  email: String
   token: String
+  role: UserRole!
+  createdAt: DateTime!
   updatedAt: DateTime!
+}
+
+enum UserRole {
+  admin
+  manager
+  user
+}
+
+enum UserStatus {
+  active
+  disabled
 }

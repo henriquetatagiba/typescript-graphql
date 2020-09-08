@@ -14,15 +14,6 @@ export class UpdateUserInput {
   @Field(() => String)
   public name: string;
 
-  @Field(() => DocumentInput)
-  public documents: DocumentInput;
-
-  @Field(() => AddressInput)
-  public address: AddressInput;
-
-  @Field(() => PhoneInput)
-  public phones: PhoneInput;
-
   @Field(() => String, { nullable: true })
   public password: string;
 }

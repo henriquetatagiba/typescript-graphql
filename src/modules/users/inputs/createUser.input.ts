@@ -13,13 +13,4 @@ export class CreateUserInput {
 
   @Field(() => String)
   public password: string;
-
-  @Field(() => [DocumentInput])
-  public documents: DocumentInput[];
-
-  @Field(() => [PhoneInput])
-  public phones: PhoneInput[];
-
-  @Field(() => [AddressInput])
-  public addresses: AddressInput[];
 }

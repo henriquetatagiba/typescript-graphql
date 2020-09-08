@@ -7,9 +7,8 @@ import {
 } from '@typegoose/typegoose';
 import { Field, ObjectType, ID } from 'type-graphql';
 import * as bcrypt from 'bcrypt';
-import { Address } from '../../common/types/address.type';
-import { Phone } from '../../common/types/phone.type';
-import { Document } from '../../common/types/document.type';
+import { Status } from './enums/status.enum';
+import { Role } from './enums/role.enum';
 
 export interface IUser extends DocumentType<User> {}
 
@@ -30,9 +29,9 @@ export class User {
   @Field(() => String)
   public name: string;
 
-  @Prop({ default: 'active' })
-  @Field(() => String)
-  public status: string;
+  @Prop({ default: Status.active })
+  @Field(() => Status)
+  public status: Status;
 
   @Prop()
   @Field(() => String, { nullable: true })
@@ -44,21 +43,9 @@ export class User {
   @Field(() => String, { nullable: true })
   public token: string;
 
-  @Prop({ default: 'user' })
-  @Field(() => String)
-  public role: string;
-
-  @Prop(() => [Address])
-  @Field(() => [Address], { nullable: true })
-  public addresses: Address[];
-
-  @Prop(() => [Phone])
-  @Field(() => [Phone])
-  public phones: Phone[];
-
-  @Prop(() => [Document])
-  @Field(() => [Document])
-  public documents: Document[];
+  @Prop({ default: Role.user })
+  @Field(() => Role)
+  public role: Role;
 
   @Field(() => Date)
   public createdAt: Date;

@@ -3,8 +3,6 @@ import { $log } from '@tsed/common';
 import { PlatformExpress } from '@tsed/platform-express';
 import { App } from './src/app';
 
-// /!\ configuration file must be outside of your src directory
-
 async function bootstrap() {
   try {
     $log.debug('Start server...');
